@@ -1,0 +1,15 @@
+3ddb6220f94883eb57c23c4cec6db36c *DESCRIPTION
+dabaf0d71e9d0882862a3c5ec1c3aa4e *LICENSE
+9ccc062bf439281fd8df82d5ca9b5397 *NAMESPACE
+2b5b33388b8f4cf3021cea93940c5482 *NEWS.md
+a88a265796a664318b6f48ad59f4a517 *R/helpers.R
+a4812ca638c4b927a5aa32525ba41e62 *R/log_msg.R
+2f726c029cc098e0892fad7624d2ce6c *README.md
+4c85fe867a28074eb19cdfb148122721 *man/log_debug.Rd
+86566f607c57d1a3a285b9ca628f08b3 *man/log_error.Rd
+4570dc4012172d76d51d26bf78787176 *man/log_fatal.Rd
+5d81283b9bfb5f7d9d882a43e6ae9209 *man/log_info.Rd
+fae5fa1f96bf93cd99f4d32bdc9bc5fc *man/log_trace.Rd
+7d5959db93591a045205b7b738789736 *man/log_warn.Rd
+fd5def2648c091456c3a5cdbd6cac5a9 *tests/testthat.R
+3849bd66c078e30c464fd6f4a8f3b41d *tests/testthat/test-helpers.R
