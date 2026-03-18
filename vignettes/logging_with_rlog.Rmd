@@ -1,36 +1,23 @@
-# rlog
+---
+title: "Introduction to logging with rlog"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to logging with rlog}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/sellorm/rlog/workflows/R-CMD-check/badge.svg)](https://github.com/sellorm/rlog/actions)
-<!-- badges: end -->
-
-rlog is an opinionated, lightweight logging package for R.
-
-It relies on long standing Unix traditions, to write simple log messages in a flexible way.
-
-Log message output looks like this:
-
-```
-2021-02-21 17:19:06 [INFO] This is my log message
-```
-
-## Installation
-
-Install rlog from GitHub with the following:
-
-``` r
-devtools::install_github("sellorm/rlog")
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
 
-## Does R _really_ need another logging package?
+```{r setup}
+library(rlog)
+```
 
-We think so, yes!
-
-There are already loads of logging packages for R. Many are no longer maintained and of the remaining selection some are overly complex, making them less approachable for beginners.
-
-Since logging should be an essential part of any production application or pipeline I think it's important that as many people as possible are introduced to good logging practice.
-
-If rlog doesn't have enough features for you, I'd recommend the excellent "[logger](https://cran.r-project.org/package=logger)" instead.
 
 ## rlog philosophy
 
@@ -39,8 +26,8 @@ The rlog philosophy is the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_
 rlog is simple by design and it relies on existing Unix/Linux norms to get the job done.
 
 * Log message format is intentionally not configurable
-* the log level can only be controlled by an environment variable
-* log messages are written to standard output and standard error
+* the log level for your application can only be controlled by an environment variable
+* log messages are written to [standard output and standard error](https://en.wikipedia.org/wiki/Standard_streams)
 
 ## Usage
 
@@ -48,7 +35,7 @@ The best way to use rlog is to call the functions directly from within your appl
 
 There is one function per log message level:
 
-``` r
+```{r example_1}
 rlog::log_fatal("my fatal message")
 rlog::log_error("my error message")
 rlog::log_warn("my warn message")
@@ -70,7 +57,7 @@ The "DEBUG" and "TRACE" message won't be printed, since the default `LOG_LEVEL` 
 
 Play around with setting the `LOG_LEVEL` directly in R and seeing what messages are emitted:
 
-``` r
+```{r example_2}
 Sys.setenv("LOG_LEVEL" = "ERROR")
 rlog::log_fatal("my fatal message")
 rlog::log_error("my error message")
@@ -82,7 +69,7 @@ rlog::log_trace("my trace message")
 
 Gives us this output:
 
-```
+```{sh example_3, eval=FALSE}
 2021-02-21 17:19:06 [FATAL] fatal
 2021-02-21 17:19:06 [ERROR] error
 ```
@@ -91,14 +78,14 @@ Remember though, the best way to set the environment variable is outside of the 
 
 So in your terminal you can do something like this before you run your script:
 
-``` sh
+```{sh example_4, eval=FALSE}
 $ export LOG_LEVEL=TRACE
 $ ./my_script.R
 ```
 
 Or you can even call your script with the appropriate value at run-time:
 
-``` sh
+```{sh example_5, eval=FALSE}
 $ LOG_LEVEL=ERROR ./my_script.R
 ```
 
@@ -130,16 +117,22 @@ Another example:
 * debug <= If we set the log level here only messages of debug and above will be emitted.
 * trace
 
-This is a really powerful way of only including the messages you want to see in the log files at any given time. For example, you may choose to set the `LOG_LEVEL` to "TRACE" while developing your application or if it runs into a problem in production, but you might choose to run the application with a `LOG_LEVEL` of "ERROR" under normal circumstances.
+This is a really powerful way of only including the messages you want to see in the log files at any given time.
+For example, you may choose to set the `LOG_LEVEL` to "TRACE" while developing your application or if it runs into a problem in production, 
+but you might choose to run the application with a `LOG_LEVEL` of "ERROR" under normal circumstances.
 
 
 ## I want to write to a log file, not the console
 
-rlog outputs it log messages into the console in the same way that most Unix/Linux tools do. Ordinary messages go to "standard output" ([stdout](https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout))) and errors go to "standard error" ([stderr](https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr))).
+rlog outputs it log messages into the console in the same way that most Unix/Linux tools do.
+Ordinary messages go to "standard output" 
+([stdout](https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout))) 
+and errors go to "standard error"
+([stderr](https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr))).
 
 This means they can be captured in the standard Unix/Linux way:
 
-```
+```{sh example_6, eval=FALSE}
 ./my_script.R > /path/to/file.log 2>&1
 ```
 
@@ -147,8 +140,8 @@ This command redirects stderr to stdout and drops it all into the `/path/to/file
 
 You can also keep the "normal" and error outputs separate:
 
-```
+```{sh example_7, eval=FALSE}
 ./my_script.R > /path/to/file.log 2> /path/to/errors.log
 ```
 
-Many enterprise software products, such as RStudio Connect will capture this output automatically and save it for you.
+Many enterprise software products, such as Posit Connect will capture this output automatically and save it for you.
